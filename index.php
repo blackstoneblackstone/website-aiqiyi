@@ -1,7 +1,7 @@
 <?php
 
 $q=$_GET["q"];
-$qlist=curlGet("http://expand.video.iqiyi.com/api/category/list.json?apiKey=71c300df4a7f4e89a43d8e19e5458e6f");
+$qlist=curlGet("http://expand.video.iqiyi.com/api/category/list.json?apiKey=eff9fc20731447578ebafa045bfd487d");
 // echo $qlist;
 
 
@@ -43,9 +43,11 @@ function curlGet($url)
         padding: 50px;
     }
 </style>
+
+<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
 <script type="text/javascript" src="js/jQuery-2.1.4.min.js"></script>
 <script type="text/javascript" src="js/bootstrap.min.js"></script>
-<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+
 <script>
     function star(id,name,desc){
        $.ajax(
@@ -56,22 +58,17 @@ function curlGet($url)
                alert(data1);
             }
         });
-       
     }
    function model(src){
-
      $.ajax(
         {
             url:src,
             type:"get",
             success:function(data1){
-               $("#swf").attr("src",data1);
+                $("#videosrc").attr("src",data1.replace("http://dispatcher.video.qiyi.com/disp/shareplayer.swf","http://m.iqiyi.com/shareplay.html"));
+                $("#myModal").modal();
             }
         });
-     
-//      $('#model').on('shown.bs.modal', function () {
-//   // $('#myInput').focus()
-// });
    }
 
 </script>
@@ -90,7 +87,6 @@ function curlGet($url)
 
         }else{
        echo '<li role="presentation" ><a href="index.php?q='.$qlist->data[$i]->categoryId.'">'.$qlist->data[$i]->categoryName.'</a></li>';
-
         }
     }
 
@@ -103,16 +99,23 @@ function curlGet($url)
       <th>PICURL</th>
       <th>NAME</th>
       <th>DESC</th>
-      <th>ACTION</th>
+      <th>播放</th>
+      <th>弹框</th>
+      <th>预览</th>
+      <th>收藏</th>
   </thead>
  <?php 
 
     for($i=0;$i<count($list->data);$i++){
        echo '<tr><td>'.$list->data[$i]->albumId.'</td>'.
-            '<td><a href="'.$list->data[$i]->picUrl.'">查看图片</a></td>'.
+            '<td><a href="'.$list->data[$i]->picUrl.'">查看图片<img src="'.$list->data[$i]->picUrl.'"></a></td>'.
             '<td>'.$list->data[$i]->albumName.'</td>'.
             '<td>'.$list->data[$i]->desc.'</td>'.
-            '<td><a href="swf.php?vid='.$list->data[$i]->tvIds[0].'" target="_blank" class="btn btn-success" >预览</a><button onclick="star(\''.$list->data[$i]->albumId.'\',\''.$list->data[$i]->albumName.'\',\''.$list->data[$i]->desc.'\')" class="btn btn-warning">收藏</button></td><tr>';
+            '<td><a href="http://expand.video.iqiyi.com/api/video/info.json?apiKey=eff9fc20731447578ebafa045bfd487d&tvId='.$list->data[$i]->tvIds[0].'" target="_blank" class="btn btn-success btn-lg" >详细</a></td>'.
+            '<td><button type="button" class="btn btn-primary btn-lg" onclick="model(\'swf.php?vid='.$list->data[$i]->tvIds[0].'\')" >弹框</button></td>'.
+            '<td><a href="swf.php?vid='.$list->data[$i]->tvIds[0].'" target="_blank" class="btn btn-success btn-lg" >预览</a></td>'.
+            '<td><button onclick="star(\''.$list->data[$i]->albumId.'\',\''.$list->data[$i]->albumName.'\',\''.$list->data[$i]->desc.'\')" class="btn btn-warning">收藏</button></td>'.
+            '<tr>';
     }
 
     ?>
@@ -121,28 +124,36 @@ function curlGet($url)
 
 
 
-
 <!-- Modal -->
-<div class="modal fade" id="Model" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
-      </div>
-      <div class="modal-body">
-         <div style="width:375px;height:667px;">
-         <video id="swf" style="width:375px;height:667px;" src="" controls>
-           
-         </video>
+<div class="modal fade" style="display: none" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">预览</h4>
+            </div>
+            <div class="modal-body" style="height: 667px;width: 375px">
+<!--                <object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=7,0,19,0" width="500" height="300">-->
+<!--                    <param id="src1" name="movie" value=""/>-->
+<!--                    <param name="quality" value="high"/>-->
+<!--                    <param name="wmode" value="transparent"/>-->
+<!--                    <param value="true" name="allowFullScreen"/>-->
+<!--                    <embed id="src2" src="" wmode="transparent" quality="high" pluginspage="http://www.macromedia.com/go/getflashplayer" type="application/x-shockwave-flash" width="500" height="300" allowfullscreen="true"/>-->
+<!--                </object>-->
+                <iframe id="videosrc" src="" width="375" height="667">
+
+
+
+                </iframe>
+            </div>
+            <div class="modal-footer">
+
+            </div>
         </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
-      </div>
     </div>
-  </div>
 </div>
+
+
+
 </body>
 </html>

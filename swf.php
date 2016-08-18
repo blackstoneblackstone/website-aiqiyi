@@ -3,8 +3,8 @@ $vid=$_GET["vid"];
 
 $info=curlGet("http://expand.video.iqiyi.com/api/video/info.json?apiKey=eff9fc20731447578ebafa045bfd487d&tvId=".$vid);
 
-header("Location:".$info->data->swf);
-// echo $info->data->swf;
+//header("Location:".$info->data->swf);
+ echo $info->data->swf;
 
 function curlGet($url)
 {

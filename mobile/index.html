@@ -1,0 +1,313 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Gulp HTML5 LESS</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="heat map">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            font-family: Lantinghei SC, Open Sans, Arial, Hiragino Sans GB, Microsoft YaHei, \\5FAE\8F6F\96C5\9ED1, STHeiti, WenQuanYi Micro Hei, SimSun, sans-serif;
+        }
+
+        li {
+            list-style: none;
+        }
+
+        ul {
+            margin: 0;
+            padding: 0;
+        }
+
+        .clear {
+            clear: both;
+            height: 5px;
+        }
+
+        .header {
+            background-color: #313944;
+            height: 50px;
+            text-align: center;
+        }
+
+        .header img {
+            height: 40px;
+            margin-top: 5px;
+        }
+
+        .nav {
+            height: 50px;
+            width: 100%;
+            border-bottom: solid #e6e6e6 1px;
+        }
+
+        #scroller {
+            -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+            width: 480px;
+            -webkit-transform: translateZ(0);
+            -moz-transform: translateZ(0);
+            -ms-transform: translateZ(0);
+            -o-transform: translateZ(0);
+            transform: translateZ(0);
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            -webkit-text-size-adjust: none;
+            -moz-text-size-adjust: none;
+            -ms-text-size-adjust: none;
+            -o-text-size-adjust: none;
+            text-size-adjust: none;
+        }
+
+        #scroller ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+        }
+
+        #scroller li {
+            display: block;
+            float: left;
+            width: 80px;
+            text-align: center;
+            font-size: 18px;
+            line-height: 50px;
+        }
+
+        .con {
+            margin: 0px 10px 10px 10px;
+            min-height: 450px;
+        }
+
+        .banner {
+            width: 100%;
+        }
+
+        .banner iframe {
+            width: 100%;
+            height: 200px;
+            border: 0px;
+        }
+
+        p {
+            margin: 0px;
+        }
+
+        .ban-title {
+            font-size: 16px;
+            font-weight: bolder;
+        }
+
+        .ban-desc {
+            font-size: 14px;
+        }
+
+        .list li {
+            float: left;
+            width: 49%;
+            height: 150px;
+            margin-top: 10px;
+        }
+
+        .list li:nth-child(even) {
+            margin-left: 2%;
+        }
+
+        .list img {
+            width: 100%;
+            height: 100px;
+        }
+
+        .li-title {
+            font-size: 13px;
+            font-weight: bolder;
+        }
+
+        .li-desc {
+            font-size: 12px;
+            word-wrap: break-word;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .bottom {
+            height: 70px;
+            width: 100%;
+            background-color: #313944;
+            color: #7c8282;
+            text-align: center;
+            font-size: 12px;
+            padding-top: 15px;
+        }
+    </style>
+</head>
+<body>
+<div class="header">
+
+    <img src="images/logo.png">
+
+</div>
+<div id="wrapper">
+    <div class="nav" id="scroller">
+        <ul>
+            <li data-id="1">资讯</li>
+            <li data-id="12"> 娱乐</li>
+            <li data-id="11"> 搞笑</li>
+            <li data-id="13"> 游戏</li>
+            <li data-id="14"> 预告片</li>
+            <li data-id="15">纪录片</li>
+        </ul>
+    </div>
+    <div class="clear"></div>
+</div>
+<div class="con">
+    <div class="banner" id="banner">
+        <iframe id="default-video-src"
+                src="">
+
+        </iframe>
+        <p class="ban-title" id="default-video-title">
+        </p>
+        <p class="ban-desc" id="default-video-desc">
+        </p>
+    </div>
+    <div class="list">
+        <ul id="listVideo">
+
+
+        </ul>
+        <div class="clear"></div>
+    </div>
+
+</div>
+<div class="bottom">
+    <p>客服电话:4000-388-399 周一至周五工作时间 | 客服QQ:3024180734</p>
+    <p>@国创科视 | ICP备案:辽ICP备15000555号</p>
+</div>
+<!-- Scripts -->
+<script src="js/zepto.min.js"></script>
+<script src="js/iscroll.js"></script>
+<script>
+    var jsonData = [
+            {
+            channelId: 1,
+            channelName: "",
+            defaultVideo: {
+                id: 522989500,
+                h5Src: "http://dispatcher.video.qiyi.com/common/shareplayer.html?vid=1fd2140d363315dfef019efd39f5ee27&tvId=522989500&coop=&cid=&bd=1",
+                title: "SMAP宣布解散,日本娱乐圈人士纷纷表态",
+                desc: "SMAP宣布解散,日本娱乐圈人士纷纷表态"
+            },
+            listVideo: [
+                {
+                    id: 522970700,
+                    h5Src: "",
+                    img: "",
+                    title: "Bigbang十年面貌大回顾 致过往的青葱岁月",
+                    desc: "Bigbang十年面貌大回顾 致过往的青葱岁月"
+                },
+                {
+                    id: 522970700,
+                    h5Src: "",
+                    img: "",
+                    title: "Bigbang十年面貌大回顾 致过往的青葱岁月",
+                    desc: "Bigbang十年面貌大回顾 致过往的青葱岁月"
+                },
+                {
+                    id: 522970700,
+                    h5Src: "",
+                    img: "",
+                    title: "Bigbang十年面貌大回顾 致过往的青葱岁月",
+                    desc: "Bigbang十年面貌大回顾 致过往的青葱岁月"
+                },
+                {
+                    id: 522970700,
+                    h5Src: "",
+                    img: "",
+                    title: "Bigbang十年面貌大回顾 致过往的青葱岁月",
+                    desc: "Bigbang十年面貌大回顾 致过往的青葱岁月"
+                },
+                {
+                    id: 522970700,
+                    h5Src: "",
+                    img: "",
+                    title: "Bigbang十年面貌大回顾 致过往的青葱岁月",
+                    desc: "Bigbang十年面貌大回顾 致过往的青葱岁月"
+                }, {
+                    id: 522970700,
+                    h5Src: "",
+                    img: "",
+                    title: "Bigbang十年面貌大回顾 致过往的青葱岁月",
+                    desc: "Bigbang十年面貌大回顾 致过往的青葱岁月"
+                }
+            ]
+        }
+    ];
+    var navScroll;
+
+    $(function () {
+        navScroll = new IScroll('#wrapper', {scrollX: true, scrollY: false, mouseWheel: true});
+        document.addEventListener('touchmove', function (e) {
+            e.preventDefault();
+        }, false);
+
+        $(".nav li").tap(function () {
+            $(".nav li").css("color", "#000000");
+            $(".nav li").css("border-bottom", "solid #00bc00 0px");
+            $(this).css("color", "#00bc00");
+            $(this).css("border-bottom", "solid #00bc00 2px");
+            var channelId = $(this).attr("data-id");
+            initData(channelId);
+        });
+
+
+    });
+
+
+    function initData(channelId) {
+        var flag = 0;
+        for (var i = 0; i < jsonData.length; i++) {
+            if (jsonData[i].channelId == channelId) {
+                flag = 1;
+                $("#banner").html('<iframe id="default-video-src" src="' + jsonData[i].defaultVideo.h5Src + '">' +
+                        '</iframe>' +
+                        '<p class="ban-title" id="default-video-title">' +
+                        jsonData[i].defaultVideo.title +
+                        '</p>' +
+                        '<p class="ban-desc" id="default-video-desc">' +
+                        jsonData[i].defaultVideo.desc +
+                        '</p>');
+                var listVideo = '';
+
+                for (var j = 0; j < jsonData[i].listVideo.length; j++) {
+                    listVideo = listVideo + '<li><img src="' + jsonData[i].listVideo[j].img + '">' +
+                            '<p class="li-title">' +
+                            jsonData[i].listVideo[j].title +
+                            ' </p>' +
+                            ' <p class="li-desc">' +
+                            jsonData[i].listVideo[j].desc +
+                            '</p></li>';
+                }
+                $("#listVideo").html(listVideo);
+                break;
+            }
+        }
+        if (flag == 0) {
+            $("#banner").html("无相关视频")
+            $("#listVideo").html("");
+        }
+    }
+
+</script>
+</body>
+</html>
