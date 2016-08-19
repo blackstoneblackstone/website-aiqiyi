@@ -51,45 +51,33 @@ function curlGet($url)
 
     <script>
         function star(id, title, desc, src, channel, ele) {
-            var img = $("#" + id).val();
+            var img = $("#in-" + id).val();
+
+//            console.log($(ele));
+            $(ele).button('loading');
+            var h5src=$("#"+id).attr("data-h5");
             if (img == '') {
                 alert("请填写图片地址");
+                $(ele).button('reset');
                 return;
             }
-            console.log($(ele));
-            $(ele).button('loading');
             $.ajax(
                 {
-                    url: src,
-                    type: "get",
+                    url: "json.php",
+                    type: "post",
+                    data: {
+                        title: title,
+                        id: id,
+                        desc: desc,
+                        img: img,
+                        h5Src: h5src,
+                        channel: channel
+                    },
                     success: function (data1) {
-                        if (data1 == 0) {
-                            alert("该资源不能在手机端播放");
-                            return;
-                        }
-                        var h5 = data1.replace("http://dispatcher.video.qiyi.com/disp/shareplayer.swf", "http://m.iqiyi.com/shareplay.html");
-
-                        $.ajax(
-                            {
-                                url: "json.php",
-                                type: "post",
-                                data: {
-                                    title: title,
-                                    id: id,
-                                    desc: desc,
-                                    img: img,
-                                    h5Src: h5,
-                                    channel: channel
-                                },
-                                success: function (data1) {
-                                    $(ele).button('reset');
-                                    alert("收藏成功");
-                                }
-                            });
-
+                        $(ele).html("已收藏");
+                        alert("收藏成功");
                     }
                 });
-
         }
         function model(src) {
             $.ajax(
@@ -128,7 +116,7 @@ function curlGet($url)
         ?>
     </ul>
 
-    <table class="table table-bordered">
+    <table class="table table-bordered" id="ta">
         <thead>
         <th>ID</th>
         <th>PICURL</th>
@@ -143,15 +131,15 @@ function curlGet($url)
         <?php
 
         for ($i = 0; $i < count($list->data); $i++) {
-            echo '<tr><td>' . $list->data[$i]->albumId . '</td>' .
-                '<td><a href="' . $list->data[$i]->picUrl . '">查看图片<img src="' . $list->data[$i]->picUrl . '"></a></td>' .
+            echo '<tr data-h5="" id="' . $list->data[$i]->tvIds[0] . '"><td>' . $list->data[$i]->albumId . '</td>' .
+                '<td><img src="' . $list->data[$i]->picUrl . '"></td>' .
                 '<td>' . $list->data[$i]->albumName . '</td>' .
                 '<td>' . $list->data[$i]->desc . '</td>' .
-                '<td><input id="' . $list->data[$i]->albumId . '"></td>' .
+                '<td><input id="in-' . $list->data[$i]->albumId . '"></td>' .
                 '<td><a href="swf.php?vid=' . $list->data[$i]->tvIds[0] . '" target="_blank" class="btn btn-success btn-lg" >预览</a></td>' .
                 '<td><a href="http://expand.video.iqiyi.com/api/video/info.json?apiKey=eff9fc20731447578ebafa045bfd487d&tvId=' . $list->data[$i]->tvIds[0] . '" target="_blank" class="btn btn-success btn-lg" >详细</a></td>' .
                 '<td><button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal" onclick="model(\'swf.php?vid=' . $list->data[$i]->tvIds[0] . '\')" >弹框</button></td>' .
-                '<td><button data-loading-text="收藏中..."  onclick="star(\'' . $list->data[$i]->albumId . '\',\'' . $list->data[$i]->albumName . '\',\'' . $list->data[$i]->desc . '\',\'swf.php?vid=' . $list->data[$i]->tvIds[0] . '\',\'' . $list->data[$i]->categoryId . '\',this)" class="btn btn-warning">收藏</button></td>' .
+                '<td><button data-loading-text="收藏中..."  onclick="star(\'' . $list->data[$i]->albumId . '\',\'' . urlencode($list->data[$i]->albumName) . '\',\'' . urlencode($list->data[$i]->desc) . '\',\'swf.php?vid=' . $list->data[$i]->tvIds[0] . '\',\'' . $list->data[$i]->categoryId . '\',this)" class="btn btn-warning">收藏</button></td>' .
                 '<tr>';
         }
 
@@ -189,6 +177,28 @@ function curlGet($url)
     </div>
 </div>
 
-
+<script>
+    $(function () {
+        $("#ta").find("tr").each(function (a) {
+            var id = $(this).attr("id");
+            if (id != undefined) {
+                $.ajax(
+                    {
+                        url: "swf.php?vid=" + id,
+                        type: "get",
+                        success: function (data1) {
+                            if (data1 == 0) {
+                                $("#" + id).addClass("alert-danger");
+                            } else {
+                                $("#" + id).addClass("alert-success");
+                                $("#" + id).attr("data-h5", data1);
+                            }
+                        }
+                    }
+                );
+            }
+        })
+    });
+</script>
 </body>
 </html>

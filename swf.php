@@ -4,9 +4,12 @@ $vid = $_GET["vid"];
 $info = curlGet("http://expand.video.iqiyi.com/api/video/info.json?apiKey=eff9fc20731447578ebafa045bfd487d&tvId=" . $vid);
 
 //header("Location:".$info->data->swf);
-foreach ($info->data->playControls as $control) {
-    if ($control->platformId == 15 && $control->cooperationAllowed == 1 && $control->availableStatus == 1) {
-        echo $info->data->swf;die;
+if (!empty($info)) {
+    foreach ($info->data->playControls as $control) {
+        if ($control->platformId == 15 && $control->cooperationAllowed == 1 && $control->availableStatus == 1) {
+            echo str_replace("http://dispatcher.video.qiyi.com/disp/shareplayer.swf", "http://m.iqiyi.com/shareplay.html",$info->data->swf);
+            die;
+        }
     }
 }
 echo 0;

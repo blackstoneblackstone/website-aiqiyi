@@ -90,7 +90,6 @@
         }
 
         .banner {
-            width: 100%;
             margin:0 10px 0 10px;
         }
 
@@ -107,6 +106,10 @@
         .ban-title {
             font-size: 16px;
             font-weight: bolder;
+            word-wrap: break-word;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
 
         .ban-desc {
@@ -310,20 +313,20 @@
                     $("#banner").html('<iframe id="default-video-src" src="' + jsonData[i].h5Src + '&autoPlay=0">' +
                         '</iframe>' +
                         '<p class="ban-title" id="default-video-title">' +
-                        jsonData[i].title +
+                        decodeURI(jsonData[i].title) +
                         '</p>' +
                         '<p class="ban-desc" id="default-video-desc">' +
-                        jsonData[i].desc +
+                        decodeURI(jsonData[i].desc) +
                         '</p>');
                     flag = 1;
                 } else {
-                    listVideo = listVideo + '<li data-src="' + jsonData[i].h5Src + '" data-title="' + jsonData[i].title + '" data-desc="' + jsonData[i].desc + '">' +
+                    listVideo = listVideo + '<li data-src="' + jsonData[i].h5Src+ '" data-title="' + decodeURI(jsonData[i].title) + '" data-desc="' + decodeURI(jsonData[i].desc) + '">' +
                         '<img src="' + jsonData[i].img + '">' +
                         '<p class="li-title">' +
-                        jsonData[i].title +
+                        decodeURI(jsonData[i].title) +
                         ' </p>' +
                         ' <p class="li-desc">' +
-                        jsonData[i].desc +
+                        decodeURI(jsonData[i].desc) +
                         '</p></li>';
                 }
             }

@@ -54,9 +54,9 @@ $arr = explode(";", $star);
         echo '<tr><td>' . $ob->channel . '</td>' .
             '<td>' . $ob->id . '</td>' .
             '<td><img style="width:100px" src="' . $ob->img . '"></td>' .
-            '<td>' . $ob->title . '</td>' .
+            '<td>' . urldecode($ob->title) . '</td>' .
             '<td><a href="swf.php?vid=' . $ob->id . '" class="btn btn-success">预览</a>' .
-//            '<button class="btn btn-danger" onclick="del(\'' . urlencode(json_encode($ob)) . '\')">删除</button>' .
+            '<button class="btn btn-danger" onclick="del(\'' . urlencode(json_encode($ob)) . '\')">删除</button>' .
             '</td><tr>';
     }
 
