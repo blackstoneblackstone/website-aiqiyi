@@ -30,7 +30,7 @@
 ## 2 收藏页面：
 
 地址：http://wx.widalian.com/w-aiqiyi/star.php
-![1.png](https://github.com/lihongbin100/aiqiyi/blob/master/3.png?raw=true)
+![1.png](https://github.com/lihongbin100/aiqiyi/blob/master/4.png?raw=true)
 
 
 可删除
@@ -39,7 +39,7 @@
 地址：http://wx.widalian.com/w-aiqiyi/mobile/
 
 收藏的视频与手机展示页面的视频是实时同步的。
-![1.png](https://github.com/lihongbin100/aiqiyi/blob/master/4.png?raw=true)
+![1.png](https://github.com/lihongbin100/aiqiyi/blob/master/3.png?raw=true)
 
 
 
