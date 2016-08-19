@@ -1,8 +1,7 @@
-<?php 
-$star= file_get_contents("json/starjson.json");
+<?php
+$star = file_get_contents("json/starjson.txt");
 
-$arr=explode(";",$star);
-
+$arr = explode(";", $star);
 
 
 ?>
@@ -13,50 +12,57 @@ $arr=explode(";",$star);
 <script type="text/javascript" src="js/bootstrap.min.js"></script>
 <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
 <style type="text/css">
-	body{
-		padding: 50px;
-	}
+    body {
+        padding: 50px;
+    }
 </style>
+<script>
+    function del(obj) {
+        $.ajax({
+            url: "del.php",
+            type: "post",
+            data: {
+                obj: obj
+            },
+            success: function (data) {
+                alert("删除成功");
+                location.reload();
+            }
+        });
+    }
+</script>
 </head>
 <body>
 
-<ul class="nav nav-tabs">
-<?php 
+<h1>
+    收藏的视频
+</h1>
+<hr>
+<table class="table table-bordered">
+    <thead>
+    <th>栏目</th>
+    <th>ID</th>
+    <th>图片</th>
+    <th>标题</th>
+    <th>ACTION</th>
+    </thead>
+    <?php
 
-    for($i=0;$i<count($qlist->data);$i++){
-        if($q==$qlist->data[$i]->categoryId){
-       echo '<li role="presentation" class="active"><a href="index.php?q='.$qlist->data[$i]->categoryId.'">'.$qlist->data[$i]->categoryName.'</a></li>';
+    for ($i = 0; $i < (count($arr) - 1); $i++) {
+        $ob = json_decode($arr[$i]);
 
-        }else{
-       echo '<li role="presentation" ><a href="index.php?q='.$qlist->data[$i]->categoryId.'">'.$qlist->data[$i]->categoryName.'</a></li>';
-
-        }
-    }
-
-    ?>
-</ul>
-
- <table class="table table-bordered">
-  <thead>
-      <th>ID</th>
-      <th>NAME</th>
-      <th>DESC</th>
-      <th>ACTION</th>
-  </thead>
- <?php 
-
-    for($i=0;$i<(count($arr)-1);$i++){
-        $ob=json_decode($arr[$i]);
-
-       echo '<tr><td>'.$ob->id.'</td>'.
-            '<td>'.$ob->name.'</td>'.
-            '<td>'.$ob->desc.'</td>'.
-            '<td><a href="swf.php?vid='.$ob->id.'" class="btn btn-success">预览</a></td><tr>';
+        echo '<tr><td>' . $ob->channel . '</td>' .
+            '<td>' . $ob->id . '</td>' .
+            '<td><img style="width:100px" src="' . $ob->img . '"></td>' .
+            '<td>' . $ob->title . '</td>' .
+            '<td><a href="swf.php?vid=' . $ob->id . '" class="btn btn-success">预览</a>' .
+//            '<button class="btn btn-danger" onclick="del(\'' . urlencode(json_encode($ob)) . '\')">删除</button>' .
+            '</td><tr>';
     }
 
     ?>
 </table>
-  
+
 
 </body>
 </html>
