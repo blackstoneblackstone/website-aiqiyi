@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="爱奇艺视频">
-    <meta name="format-detection" content="telephone=no" />
+    <meta name="format-detection" content="telephone=no"/>
     <style>
         html, body {
             margin: 0;
@@ -90,7 +90,7 @@
         }
 
         .banner {
-            margin:0 10px 0 10px;
+            margin: 0 10px 0 10px;
         }
 
         .banner iframe {
@@ -190,7 +190,8 @@
             font-size: 12px;
             padding-top: 15px;
         }
-        #listVideo{
+
+        #listVideo {
             margin: 0 10px 10px 10px;
         }
     </style>
@@ -204,12 +205,12 @@
 <div id="wrapper">
     <div class="nav scroller">
         <ul>
-            <li data-id="25">资讯</li>
-            <li data-id="7">娱乐</li>
-            <li data-id="22">搞笑</li>
-            <li data-id="8">游戏</li>
-            <li data-id="10">预告片</li>
-            <li data-id="3">纪录片</li>
+            <li data-id="25" hit-funcid="F0001">资讯</li>
+            <li data-id="7" hit-funcid="F0002">娱乐</li>
+            <li data-id="22" hit-funcid="F0003">搞笑</li>
+            <li data-id="8" hit-funcid="F0004">游戏</li>
+            <li data-id="10" hit-funcid="F0005">预告片</li>
+            <li data-id="3" hit-funcid="F0006">纪录片</li>
         </ul>
     </div>
     <div class="clear"></div>
@@ -243,26 +244,15 @@
 <!-- Scripts -->
 <script src="js/zepto.min.js"></script>
 <script src="js/iscroll.js"></script>
+<script src="js/gcks-hit-2.0-20160728.js"></script>
 <script>
-    //    Object
-    //    channel
-    //        :
-    //        12
-    //    desc
-    //        :
-    //        "Bigbang十年面貌大回顾 fsfs"
-    //    h5Src
-    //        :
-    //        "http://dispatcher.video.qiyi.com/common/shareplayer.html?vid=cda5724fafe35809c97aaec0dba5413d&tvId=522968200&coop=coop_209_gcks&cid=qc_105149_300665&bd=1"
-    //    id
-    //        :
-    //        522970700
-    //    img
-    //        :
-    //        ""
-    //    title
-    //        :
-    //        "dff"
+    var cityid = 11602;//大连
+    var provinceid = 116;
+    var appid = "WA_AUTH_PPCP";
+    var appver = "3.1";
+    var extendInit = "func_id:F0001;";
+    GcksHit.init(cityid, provinceid, appid, appver, extendInit);
+
     var jsonData = [];
     var navScroll, listScroll;
 
@@ -292,6 +282,10 @@
                     $(this).css("border-bottom", "solid #00bc00 2px");
                     var channelId = $(this).attr("data-id");
                     initData(channelId);
+
+                    extendInit = "func_id:"+$(this).attr("hit-funcid")+";";
+                    GcksHit.init(cityid, provinceid, appid, appver, extendInit);
+                    GcksHit.click("P0003",channelId);
                 });
                 $(".nav li:nth-child(1)").css("color", "#00bc00");
                 $(".nav li:nth-child(1)").css("border-bottom", "solid #00bc00 2px");
@@ -311,23 +305,23 @@
             if (jsonData[i].channel == channelId) {
                 if (flag == 0) {
                     $("#banner").html('<iframe id="default-video-src" src="' + jsonData[i].h5Src + '&autoPlay=0">' +
-                        '</iframe>' +
-                        '<p class="ban-title" id="default-video-title">' +
-                        decodeURI(jsonData[i].title) +
-                        '</p>' +
-                        '<p class="ban-desc" id="default-video-desc">' +
-                        decodeURI(jsonData[i].desc) +
-                        '</p>');
+                            '</iframe>' +
+                            '<p class="ban-title" id="default-video-title">' +
+                            decodeURI(jsonData[i].title) +
+                            '</p>' +
+                            '<p class="ban-desc" id="default-video-desc">' +
+                            decodeURI(jsonData[i].desc) +
+                            '</p>');
                     flag = 1;
                 } else {
-                    listVideo = listVideo + '<li data-src="' + jsonData[i].h5Src+ '" data-title="' + decodeURI(jsonData[i].title) + '" data-desc="' + decodeURI(jsonData[i].desc) + '">' +
-                        '<img src="' + jsonData[i].img + '">' +
-                        '<p class="li-title">' +
-                        decodeURI(jsonData[i].title) +
-                        ' </p>' +
-                        ' <p class="li-desc">' +
-                        decodeURI(jsonData[i].desc) +
-                        '</p></li>';
+                    listVideo = listVideo + '<li data-id="'+jsonData[i].id+'" data-src="' + jsonData[i].h5Src + '" data-title="' + decodeURI(jsonData[i].title) + '" data-desc="' + decodeURI(jsonData[i].desc) + '">' +
+                            '<img src="' + jsonData[i].img + '">' +
+                            '<p class="li-title">' +
+                            decodeURI(jsonData[i].title) +
+                            ' </p>' +
+                            ' <p class="li-desc">' +
+                            decodeURI(jsonData[i].desc) +
+                            '</p></li>';
                 }
             }
         }
@@ -342,9 +336,11 @@
             var src = $(this).attr("data-src");
             var title = $(this).attr("data-title");
             var desc = $(this).attr("data-desc");
-            $("#default-video-src").attr("src", src+"&autoPlay=0");
+            var id = $(this).attr("data-id");
+            $("#default-video-src").attr("src", src + "&autoPlay=0");
             $("#default-video-title").html(title);
             $("#default-video-desc").html(desc);
+            GcksHit.click("P0003",id);
         });
     }
 
